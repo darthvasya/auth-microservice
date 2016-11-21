@@ -1,4 +1,5 @@
 ﻿using AuthServer.Model;
+using AuthServer.Model.Models;
 using AuthServer.Service.Contracts;
 using System;
 using System.Collections.Generic;
@@ -11,27 +12,29 @@ namespace AuthServer.API.Controllers
 {
     public class UsersController : ApiController
     {
-        private IUserService _userService;
-        public UsersController(IUserService user)
+        private IUserManagerService _userManagerService;
+        public UsersController(IUserManagerService userManager)
         {
-            _userService = user;
+            _userManagerService = userManager;
         }
 
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public IEnumerable<User> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _userManagerService.Users();
         }
 
         // GET api/<controller>/5
         public User Get(int id)
         {
-            return _userService.GetUsers(id);
+            return null;
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public User Post([FromBody]CreateUserWrapper user)
         {
+            
+            return _userManagerService.CreateUser(user); ;
         }
 
         // PUT api/<controller>/5

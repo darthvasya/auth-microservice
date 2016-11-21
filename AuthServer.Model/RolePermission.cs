@@ -12,13 +12,9 @@ namespace AuthServer.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class RolePermission
     {
-        public int id { get; set; }
-        public string email { get; set; }
-        public Nullable<bool> email_confirmed { get; set; }
-        public Nullable<System.DateTime> date_registration { get; set; }
-        public bool blocked { get; set; }
-        public Nullable<System.DateTime> date_blocking { get; set; }
+        public int role_id { get; set; }
+        public int permission_id { get; set; }
     }
 }

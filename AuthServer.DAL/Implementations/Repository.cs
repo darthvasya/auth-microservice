@@ -32,9 +32,11 @@ namespace AuthServer.DAL.Implementations
             get { return dataContext ?? (dataContext = DatabaseFactory.Get()); }
         }
 
-        public virtual void Add(T entity)
+        public virtual T Add(T entity)
         {
-            dbSet.Add(entity);
+            T obj = null;
+            obj = dbSet.Add(entity);
+            return obj;
         }
 
         public void Delete(Expression<Func<T, bool>> where)
