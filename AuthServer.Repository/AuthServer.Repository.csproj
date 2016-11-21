@@ -50,8 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RolePermissionRepository.cs" />
     <Compile Include="UserPasswordRepository.cs" />
     <Compile Include="UserRepository.cs" />
+    <Compile Include="UserRoleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AuthServer.DAL\AuthServer.DAL.csproj">

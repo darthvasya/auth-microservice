@@ -30,10 +30,16 @@ namespace AuthServer.API.Controllers
             return null;
         }
 
+        // GET api/<controller>/{email}
+        [Route("api/users/search/email/{email}")]
+        public User GetByEmail(string email)
+        {
+            return _userManagerService.GetByEmail(email);
+        }
+
         // POST api/<controller>
         public User Post([FromBody]CreateUserWrapper user)
         {
-            
             return _userManagerService.CreateUser(user); ;
         }
 

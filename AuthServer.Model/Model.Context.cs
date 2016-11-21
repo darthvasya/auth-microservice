@@ -50,8 +50,8 @@ namespace AuthServer.Model
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserPassword> UserPasswords { get; set; }
-        public virtual DbSet<Token> Tokens { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<RolePermission> RolePermissions { get; set; }
+        public virtual DbSet<Token> Tokens { get; set; }
     }
 }

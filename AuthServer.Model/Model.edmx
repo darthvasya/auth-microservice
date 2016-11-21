@@ -54,22 +54,16 @@ warning 6002: The table/view 'user-database.dbo.Token' does not have a primary k
           <Property Name="blocked" Type="bit" Nullable="false" />
           <Property Name="date_blocking" Type="datetime2" Precision="7" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'user-database.dbo.UserPassword' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserPassword">
           <Key>
-            <PropertyRef Name="id" />
-            
+            <PropertyRef Name="user_id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="password_hash" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="passwrod_hash" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="UserRoles">
+        <EntityType Name="UserRole">
           <Key>
             <PropertyRef Name="user_id" />
-            <PropertyRef Name="role_id" />
           </Key>
           <Property Name="user_id" Type="int" Nullable="false" />
           <Property Name="role_id" Type="int" Nullable="false" />
@@ -78,6 +72,8 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
           <EntitySet Name="Permission" EntityType="Self.Permission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPassword" EntityType="Self.UserPassword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RolePermission" EntityType="Self.RolePermission" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [RolePermission].[role_id] AS [role_id], 
@@ -92,18 +88,6 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
     [Token].[last_refresh] AS [last_refresh]
     FROM [dbo].[Token] AS [Token]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="UserPassword" EntityType="Self.UserPassword" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserPassword].[id] AS [id], 
-    [UserPassword].[password_hash] AS [password_hash]
-    FROM [dbo].[UserPassword] AS [UserPassword]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserRoles].[user_id] AS [user_id], 
-    [UserRoles].[role_id] AS [role_id]
-    FROM [dbo].[UserRoles] AS [UserRoles]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -114,9 +98,9 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
           <EntitySet Name="Roles" EntityType="Model.Role" />
           <EntitySet Name="Users" EntityType="Model.User" />
           <EntitySet Name="UserPasswords" EntityType="Model.UserPassword" />
-          <EntitySet Name="Tokens" EntityType="Model.Token" />
           <EntitySet Name="UserRoles" EntityType="Model.UserRole" />
           <EntitySet Name="RolePermissions" EntityType="Model.RolePermission" />
+          <EntitySet Name="Tokens" EntityType="Model.Token" />
         </EntityContainer>
         <EntityType Name="Permission">
           <Key>
@@ -145,10 +129,25 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
         </EntityType>
         <EntityType Name="UserPassword">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="user_id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="password_hash" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="passwrod_hash" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="role_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolePermission">
+          <Key>
+            <PropertyRef Name="role_id" />
+            <PropertyRef Name="permission_id" />
+          </Key>
+          <Property Name="role_id" Type="Int32" Nullable="false" />
+          <Property Name="permission_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Token">
           <Key>
@@ -161,22 +160,6 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
           <Property Name="access_token" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="refresh_token" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="last_refresh" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="UserRole">
-          <Key>
-            <PropertyRef Name="user_id" />
-            <PropertyRef Name="role_id" />
-          </Key>
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="role_id" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RolePermission">
-          <Key>
-            <PropertyRef Name="role_id" />
-            <PropertyRef Name="permission_id" />
-          </Key>
-          <Property Name="role_id" Type="Int32" Nullable="false" />
-          <Property Name="permission_id" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -215,24 +198,14 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
           <EntitySetMapping Name="UserPasswords">
             <EntityTypeMapping TypeName="Model.UserPassword">
               <MappingFragment StoreEntitySet="UserPassword">
-                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tokens">
-            <EntityTypeMapping TypeName="Model.Token">
-              <MappingFragment StoreEntitySet="Token">
-                <ScalarProperty Name="last_refresh" ColumnName="last_refresh" />
-                <ScalarProperty Name="refresh_token" ColumnName="refresh_token" />
-                <ScalarProperty Name="access_token" ColumnName="access_token" />
-                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="passwrod_hash" ColumnName="passwrod_hash" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserRoles">
             <EntityTypeMapping TypeName="Model.UserRole">
-              <MappingFragment StoreEntitySet="UserRoles">
+              <MappingFragment StoreEntitySet="UserRole">
                 <ScalarProperty Name="role_id" ColumnName="role_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
               </MappingFragment>
@@ -243,6 +216,16 @@ warning 6002: The table/view 'user-database.dbo.UserRoles' does not have a prima
               <MappingFragment StoreEntitySet="RolePermission">
                 <ScalarProperty Name="permission_id" ColumnName="permission_id" />
                 <ScalarProperty Name="role_id" ColumnName="role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tokens">
+            <EntityTypeMapping TypeName="Model.Token">
+              <MappingFragment StoreEntitySet="Token">
+                <ScalarProperty Name="last_refresh" ColumnName="last_refresh" />
+                <ScalarProperty Name="refresh_token" ColumnName="refresh_token" />
+                <ScalarProperty Name="access_token" ColumnName="access_token" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

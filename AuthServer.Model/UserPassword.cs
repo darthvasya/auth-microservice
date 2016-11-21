@@ -14,7 +14,7 @@ namespace AuthServer.Model
     
     public partial class UserPassword
     {
-        public int id { get; set; }
-        public string password_hash { get; set; }
+        public int user_id { get; set; }
+        public string passwrod_hash { get; set; }
     }
 }

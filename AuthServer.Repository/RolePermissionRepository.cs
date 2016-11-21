@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Repository
 {
-    public class UserPasswordRepository : Repository<UserPassword>, IUserPasswordRepository
+    public class RolePermissionRepository : Repository<RolePermission>, IRolePermissionRepository
     {
         private UserEntities dataContext;
 
@@ -19,7 +19,7 @@ namespace AuthServer.Repository
             private set;
         }
 
-        public UserPasswordRepository(IDatabaseFactory databaseFactory) : base(databaseFactory)
+        public RolePermissionRepository(IDatabaseFactory databaseFactory) : base(databaseFactory)
         {
             DatabaseFactory = databaseFactory;
         }
@@ -30,6 +30,7 @@ namespace AuthServer.Repository
         }
     }
 
-    public interface IUserPasswordRepository : IRepository<UserPassword>
+
+    public interface IRolePermissionRepository : IRepository<RolePermission>
     { }
 }

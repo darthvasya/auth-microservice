@@ -14,7 +14,7 @@ namespace AuthServer.Service.Contracts
         IEnumerable<User> Users(); //get all users
 
         User GetById(int id);
-        User GetByEmail(int id);
+        User GetByEmail(string email);
 
 
     }
